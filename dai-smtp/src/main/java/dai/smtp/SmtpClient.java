@@ -4,12 +4,11 @@ import java.io.*;
 
 import java.net.Socket;
 import java.nio.charset.StandardCharsets;
-import java.util.Arrays;
-import java.util.HashSet;
-import java.util.stream.Collectors;
+import java.util.ArrayList;
 
 public class SmtpClient implements java.io.Closeable {
 
+    public static final int DEFAULT_SMTP_SERVER_PORT = 587;
     private final String greetCommand = "EHLO ";
     private final String senderCommand = "MAIL FROM:";
     private final String rcptCommand = "RCPT TO:";
@@ -32,20 +31,13 @@ public class SmtpClient implements java.io.Closeable {
         return line.charAt(3) == ' ';
     }
 
-    public boolean sendEmail(Group group) {
-
-        try {
-            sendEmailToServer(group.getSender(), group.getRecipients(), group.getMessage());
-        } catch (IOException e) {
-            return false;
-        }
-
-        return true;
-    }
-
     private void sendCommand(String command) throws IOException {
         writer.write(command);
         writer.flush();
+    }
+
+    private void endCommunication() throws IOException {
+        sendCommand(endSend);
     }
 
     private void greetOtherServer(String domain) throws IOException {
@@ -72,33 +64,23 @@ public class SmtpClient implements java.io.Closeable {
         }
     }
 
-    private void sendEmailToServer(Person sender, Person[] recipients, Message message)
+    public void sendEmail(Sender sender, ArrayList<Victim> recipients, Message message)
             throws IOException {
+
         emptyBuffer();
-        greetOtherServer(sender.domain());
+        greetOtherServer(sender.getDomain());
         emptyBuffer();
-        sendSender(sender.email());
+        sendSender(sender.getEmailAddress());
         emptyBuffer();
         for (var rcpt : recipients) {
-            sendRcpt(rcpt.email());
+            sendRcpt(rcpt.getEmailAddress());
             emptyBuffer();
         }
         String data = message.getSubject() + "\r\n" + message.getBody();
         sendData(data);
         emptyBuffer();
-
-    }
-
-    private HashSet<String> getServers(String[] recipients) {
-        var ret = new HashSet<String>();
-
-        for (var rec : recipients) {
-            if (!rec.contains("@"))
-                continue;
-            ret.add(rec.split("@")[1]);
-        }
-        return ret;
-
+        endCommunication();
+        emptyBuffer();
     }
 
     @Override
