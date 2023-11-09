@@ -1,13 +1,12 @@
 package dai.smtp;
 
-public class Person{
+abstract public class Person {
 
-    final String emailAddress;
+    private final String emailAddress;
 
-    public Person(String address){
-        if(!address.contains("@")){
-            throw new RuntimeException();
-        }
+    public Person(String address) {
+        if (!address.contains("@"))
+            throw new RuntimeException("Not a valid email address");
         emailAddress = address;
     }
 
@@ -15,8 +14,7 @@ public class Person{
         return emailAddress;
     }
 
-    public String getDomain(){
-        String[] email = emailAddress.split("@");
-        return email[1];
+    public String getDomain() {
+        return emailAddress.split("@")[1];
     }
 }
