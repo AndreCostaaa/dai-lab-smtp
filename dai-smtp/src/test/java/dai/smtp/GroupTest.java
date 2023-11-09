@@ -1,6 +1,7 @@
 package dai.smtp;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import java.util.ArrayList;
 import java.util.Arrays;
@@ -28,6 +29,16 @@ public class GroupTest {
 
     @Test
     public void victimTest() {
-        assertEquals(group.getVictims(), victims);
+        var groupVictims = group.getVictims();
+        assertEquals(groupVictims.size(), victims.size());
+        for (var v : victims) {
+            boolean isInGroup = false;
+            for (var gv : groupVictims) {
+                if (gv == v) {
+                    isInGroup = true;
+                }
+            }
+            assertTrue(isInGroup);
+        }
     }
 }
