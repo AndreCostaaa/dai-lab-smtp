@@ -21,8 +21,7 @@ public class SmtpClient implements java.io.Closeable {
     private final BufferedWriter writer;
 
     public SmtpClient(String serverDomain, int serverPort) throws IOException {
-        // we ignore the server domain and just connect to our mock server and port
-        socket = new Socket("127.0.0.1", 1025);
+        socket = new Socket(serverDomain, serverPort);
         reader = new BufferedReader(new InputStreamReader(socket.getInputStream(), StandardCharsets.UTF_8));
         writer = new BufferedWriter(new OutputStreamWriter(socket.getOutputStream(), StandardCharsets.UTF_8));
     }
