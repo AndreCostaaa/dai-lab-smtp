@@ -31,7 +31,7 @@ public class SmtpClient implements java.io.Closeable {
     }
 
     private void sendCommand(String command) throws IOException {
-        writer.write(command);
+        writer.write(command + endCommand);
         writer.flush();
     }
 
@@ -39,21 +39,47 @@ public class SmtpClient implements java.io.Closeable {
         sendCommand(endSend);
     }
 
-    private void greetOtherServer(String domain) throws IOException {
-        sendCommand(greetCommand + domain);
+    private void sayHello(String domain) throws IOException {
+        sendCommand(String.format("%s %s", greetCommand, domain));
     }
 
     private void sendSender(String email) throws IOException {
-        sendCommand(senderCommand + email);
+        sendCommand(String.format("%s <%s>", senderCommand, email));
     }
 
     private void sendRcpt(String email) throws IOException {
-        sendCommand(rcptCommand + email);
+        sendCommand(String.format("%s <%s>", rcptCommand, email));
     }
 
-    private void sendData(String data) throws IOException {
+    private void sendMessage(Message message) throws IOException {
+
         sendCommand(dataCommand);
-        writer.write(data);
+
+        emptyBuffer();
+        writer.write("Content-type: text/plain; charset=utf-8\r\n");
+
+        Sender from = message.getFrom();
+
+        writer.write(String.format("From: \"%s\"<%s>%s", from.getDisplayName(), from.getEmailAddress(),
+                endCommand));
+        writer.write("To:\r\n");
+        if (!message.getTo().isEmpty()) {
+            String to = "To:";
+            for (var rec : message.getTo()) {
+                to += String.format(" %s <%s>;", rec.getDisplayName(), rec.getEmailAddress());
+            }
+            writer.write(to + endCommand);
+        }
+        writer.write("Cc:\r\n");
+        if (!message.getCc().isEmpty()) {
+            String to = "Cc:";
+            for (var rec : message.getCc()) {
+                to += String.format(" %s <%s>;", rec.getDisplayName(), rec.getEmailAddress());
+            }
+            writer.write(to + endCommand);
+        }
+        writer.write(String.format("Subject: %s%s%s", message.getSubject(), endCommand, endCommand));
+        writer.write(message.getBody());
         writer.write(dataEnd);
         writer.flush();
     }
@@ -67,7 +93,7 @@ public class SmtpClient implements java.io.Closeable {
             throws IOException {
 
         emptyBuffer();
-        greetOtherServer(sender.getDomain());
+        sayHello(sender.getDomain());
         emptyBuffer();
         sendSender(sender.getEmailAddress());
         emptyBuffer();
@@ -75,8 +101,8 @@ public class SmtpClient implements java.io.Closeable {
             sendRcpt(rcpt.getEmailAddress());
             emptyBuffer();
         }
-        String data = message.getSubject() + "\r\n" + message.getBody();
-        sendData(data);
+        // String data = message.getSubject() + "\r\n" + message.getBody();
+        sendMessage(message);
         emptyBuffer();
         endCommunication();
         emptyBuffer();
