@@ -26,6 +26,21 @@ public class FileReader {
     }
 
 
+    public String readText(File file){
+        StringBuilder text = new StringBuilder();
+        try(var reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))){
+
+            while(reader.ready()){
+                text.append(reader.readLine());
+            }
+            reader.close();
+            return text.toString();
+
+        }catch(IOException e) {
+            return null;
+        }
+    }
+
     public ArrayList<String> jsonParser(File file){
 
         ArrayList<String> messages = new ArrayList<>();
