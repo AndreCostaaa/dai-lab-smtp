@@ -48,8 +48,7 @@ public class Group {
 
         for (String domain : recipientsMap.keySet()) {
 
-            try (var smtpClient = new SmtpClient(domain,
-                    SmtpClient.DEFAULT_SMTP_SERVER_PORT)) {
+            try (var smtpClient = new MockSmtpClient()) {
                 smtpClient.sendEmail(sender, recipientsMap.get(domain), message);
             } catch (IOException e) {
                 return false;
