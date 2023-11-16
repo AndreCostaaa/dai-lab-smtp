@@ -51,33 +51,20 @@ public class SmtpClient implements java.io.Closeable {
         sendCommand(String.format("%s <%s>", rcptCommand, email));
     }
 
-    private void sendMessage(Message message) throws IOException {
+    private void sendMessage(Sender sender, ArrayList<Victim> recipients, Message message) throws IOException {
 
         sendCommand(dataCommand);
 
         emptyBuffer();
         writer.write("Content-type: text/plain; charset=utf-8\r\n");
 
-        Sender from = message.getFrom();
-
-        writer.write(String.format("From: \"%s\"<%s>%s", from.getDisplayName(), from.getEmailAddress(),
+        writer.write(String.format("From: \"%s\"<%s>%s", sender.getDisplayName(), sender.getEmailAddress(),
                 endCommand));
-        writer.write("To:\r\n");
-        if (!message.getTo().isEmpty()) {
-            String to = "To:";
-            for (var rec : message.getTo()) {
-                to += String.format(" %s <%s>;", rec.getDisplayName(), rec.getEmailAddress());
-            }
-            writer.write(to + endCommand);
+        String to = "To:";
+        for (var rec : recipients) {
+            to += String.format(" %s <%s>;", rec.getDisplayName(), rec.getEmailAddress());
         }
-        writer.write("Cc:\r\n");
-        if (!message.getCc().isEmpty()) {
-            String to = "Cc:";
-            for (var rec : message.getCc()) {
-                to += String.format(" %s <%s>;", rec.getDisplayName(), rec.getEmailAddress());
-            }
-            writer.write(to + endCommand);
-        }
+        writer.write(to + endCommand);
         writer.write(String.format("Subject: %s%s%s", message.getSubject(), endCommand, endCommand));
         writer.write(message.getBody());
         writer.write(dataEnd);
@@ -102,7 +89,7 @@ public class SmtpClient implements java.io.Closeable {
             emptyBuffer();
         }
         // String data = message.getSubject() + "\r\n" + message.getBody();
-        sendMessage(message);
+        sendMessage(sender, recipients, message);
         emptyBuffer();
         endCommunication();
         emptyBuffer();
