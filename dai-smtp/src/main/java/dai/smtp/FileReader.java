@@ -33,7 +33,6 @@ public class FileReader {
             while(reader.ready()){
                 text.append(reader.readLine());
             }
-            reader.close();
             return text.toString();
 
         }catch(IOException e) {
