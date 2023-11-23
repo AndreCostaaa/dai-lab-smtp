@@ -1,4 +1,5 @@
 package dai.smtp;
+import com.google.gson.*;
 
 public class Message {
 
@@ -16,5 +17,10 @@ public class Message {
 
     public String getSubject() {
         return subject;
+    }
+
+    static public Message[] makeMessageList(String messageText){
+        Gson gson = new Gson();
+        return gson.fromJson(messageText, Message[].class);
     }
 }
