@@ -1,5 +1,7 @@
 package dai.smtp;
 
+import com.google.gson.*;
+
 import java.util.ArrayList;
 
 public class Message {
@@ -20,13 +22,8 @@ public class Message {
         return subject;
     }
 
-    static public Message[] makeMessageList(ArrayList<String> messageText){
-        Message[] messages = new Message[messageText.size()/2];
-
-        for(int i = 0; i < messages.length; i++){
-            messages[i] = new Message(messageText.get(i*2), messageText.get(i*2 + 1));
-        }
-
-        return messages;
+    static public Message[] makeMessageList(String messageText) {
+        Gson gson = new Gson();
+        return gson.fromJson(messageText, Message[].class);
     }
 }
