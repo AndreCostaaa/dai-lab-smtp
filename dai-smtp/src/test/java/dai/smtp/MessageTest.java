@@ -20,7 +20,7 @@ public class MessageTest {
     }
 
     @Test
-    public void messageListTest(){
+    public void messageListTest() {
         String messageText = "[{\"subject\": \"subject1\", \"body\" : \"message1\"}, {\"subject\": \"subject2\", \"body\" : \"message2\"}]";
 
         Message[] messages = Message.makeMessageList(messageText);
