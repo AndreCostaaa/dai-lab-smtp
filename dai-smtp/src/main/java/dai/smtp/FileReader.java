@@ -9,6 +9,7 @@ import com.google.gson.stream.JsonReader;
 
 public class FileReader {
 
+    private FileReader(){}
     static public ArrayList<String> readLines(File file) {
         ArrayList<String> lines = new ArrayList<>();
 

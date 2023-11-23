@@ -9,7 +9,7 @@ public class Victim extends Person {
         super(address);
     }
 
-    public static Victim[] victimFromFile(String filepath){
+    public static Victim[] victimsFromFile(String filepath){
         File file = new File(filepath);
         ArrayList<String> emails = FileReader.readLines(file);
         if(emails == null){
