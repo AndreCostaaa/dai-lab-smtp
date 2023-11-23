@@ -1,42 +1,42 @@
 package dai.smtp;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import com.google.gson.*;
-import com.google.gson.stream.JsonReader;
 
 public class FileReader {
 
-    private FileReader(){}
+    private FileReader() {
+    }
+
     static public ArrayList<String> readLines(File file) {
         ArrayList<String> lines = new ArrayList<>();
 
-        try(var reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))){
+        try (var reader = new BufferedReader(
+                new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
 
-            while(reader.ready()){
+            while (reader.ready()) {
                 lines.add(reader.readLine());
             }
             reader.close();
             return lines;
 
-        }catch(IOException e) {
+        } catch (IOException e) {
             return null;
         }
     }
 
-
-    static public String readText(File file){
+    static public String readText(File file) {
         StringBuilder text = new StringBuilder();
-        try(var reader = new BufferedReader(new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))){
+        try (var reader = new BufferedReader(
+                new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {
 
-            while(reader.ready()){
+            while (reader.ready()) {
                 text.append(reader.readLine());
             }
             return text.toString();
 
-        }catch(IOException e) {
+        } catch (IOException e) {
             return null;
         }
     }
