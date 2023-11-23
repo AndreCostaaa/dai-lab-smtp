@@ -1,11 +1,8 @@
 package dai.smtp;
 
 import java.io.*;
-import java.lang.reflect.Array;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
-import com.google.gson.*;
-import com.google.gson.stream.JsonReader;
 
 public class FileReader {
 
