@@ -1,6 +1,8 @@
 package dai.smtp;
 import com.google.gson.*;
 
+import java.io.File;
+
 public class Message {
 
     private String subject;
@@ -19,8 +21,9 @@ public class Message {
         return subject;
     }
 
-    static public Message[] makeMessageList(String messageText){
+    static public Message[] messagesFromFile(String filepath){
+        File file = new File(filepath);
         Gson gson = new Gson();
-        return gson.fromJson(messageText, Message[].class);
+        return gson.fromJson(FileReader.readText(file), Message[].class);
     }
 }
