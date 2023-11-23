@@ -6,7 +6,10 @@ import java.util.ArrayList;
 
 public class FileReader {
 
-    public ArrayList<String> readLines(File file) {
+    private FileReader() {
+    }
+
+    static public ArrayList<String> readLines(File file) {
         ArrayList<String> lines = new ArrayList<>();
 
         try (var reader = new BufferedReader(
@@ -23,7 +26,7 @@ public class FileReader {
         }
     }
 
-    public String readText(File file) {
+    static public String readText(File file) {
         StringBuilder text = new StringBuilder();
         try (var reader = new BufferedReader(
                 new InputStreamReader(new FileInputStream(file), StandardCharsets.UTF_8))) {

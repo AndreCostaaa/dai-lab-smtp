@@ -1,8 +1,25 @@
 package dai.smtp;
 
+import java.io.File;
+import java.util.ArrayList;
+
 public class Victim extends Person {
 
     public Victim(String address) {
         super(address);
+    }
+
+    public static Victim[] victimsFromFile(String filepath){
+        File file = new File(filepath);
+        ArrayList<String> emails = FileReader.readLines(file);
+        if(emails == null){
+            return null;
+        }
+
+        Victim[] victims = new Victim[emails.size()];
+        for(int i = 0; i < emails.size(); ++i){
+            victims[i] = new Victim(emails.get(i));
+        }
+        return victims;
     }
 }
