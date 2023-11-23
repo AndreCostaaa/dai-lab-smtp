@@ -9,15 +9,15 @@ public class Victim extends Person {
         super(address);
     }
 
-    public static Victim[] victimsFromFile(String filepath){
+    public static Victim[] fromFile(String filepath) {
         File file = new File(filepath);
         ArrayList<String> emails = FileReader.readLines(file);
-        if(emails == null){
+        if (emails == null) {
             return null;
         }
 
         Victim[] victims = new Victim[emails.size()];
-        for(int i = 0; i < emails.size(); ++i){
+        for (int i = 0; i < emails.size(); ++i) {
             victims[i] = new Victim(emails.get(i));
         }
         return victims;
