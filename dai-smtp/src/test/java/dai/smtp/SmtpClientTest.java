@@ -30,7 +30,7 @@ public class SmtpClientTest {
 
         assertDoesNotThrow(() -> {
             SmtpClient client = new MockSmtpClient();
-            client.sendEmail(sender, victims, message);
+            client.sendEmail(sender, victims, victims, message);
             client.close();
         });
 

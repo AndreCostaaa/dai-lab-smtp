@@ -6,6 +6,7 @@ import java.net.Socket;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.Base64;
+import java.util.HashMap;
 
 public class SmtpClient implements java.io.Closeable {
 
@@ -115,7 +116,8 @@ public class SmtpClient implements java.io.Closeable {
      * @throws IOException
      * @throws RuntimeException if the server throws an error message
      */
-    public void sendEmail(Sender sender, ArrayList<Victim> recipients, Message message)
+    public void sendEmail(Sender sender, ArrayList<Victim> domainRecipients, ArrayList<Victim> recipients,
+            Message message)
             throws IOException, RuntimeException {
 
         emptyBuffer();
@@ -123,7 +125,7 @@ public class SmtpClient implements java.io.Closeable {
         emptyBuffer();
         sendSender(sender.getEmailAddress());
         emptyBuffer();
-        for (var rcpt : recipients) {
+        for (var rcpt : domainRecipients) {
             sendRcpt(rcpt.getEmailAddress());
             emptyBuffer();
         }
