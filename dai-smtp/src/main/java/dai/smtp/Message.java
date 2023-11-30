@@ -22,7 +22,7 @@ public class Message {
         return subject;
     }
 
-    static public Message[] messagesFromFile(String filepath) {
+    static public Message[] fromFile(String filepath) {
         File file = new File(filepath);
         Gson gson = new Gson();
         return gson.fromJson(FileReader.readText(file), Message[].class);

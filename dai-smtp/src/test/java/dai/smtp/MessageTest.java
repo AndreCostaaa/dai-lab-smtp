@@ -23,11 +23,11 @@ public class MessageTest {
     public void messageListTest() {
         String messageText = "[{\"subject\": \"subject1\", \"body\" : \"message1\"}, {\"subject\": \"subject2\", \"body\" : \"message2\"}]";
 
-        Message[] messages = Message.messagesFromFile("messages.json");
+        Message[] messages = Message.fromFile("messages.json");
 
-        assertEquals(messages[0].getBody(), "message1");
+        assertEquals(messages[0].getBody(), "Hola cariño");
         assertEquals(messages[0].getSubject(), "subject1");
-        assertEquals(messages[1].getBody(), "message2");
-        assertEquals(messages[1].getSubject(), "subject2");
+        assertEquals(messages[1].getBody(), "Como estás?");
+        assertEquals(messages[1].getSubject(), "assunto2");
     }
 }

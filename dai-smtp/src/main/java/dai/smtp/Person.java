@@ -31,4 +31,8 @@ abstract public class Person {
     public String getDomain() {
         return emailAddress.split("@")[1];
     }
+
+    public String toString() {
+        return emailAddress;
+    }
 }
