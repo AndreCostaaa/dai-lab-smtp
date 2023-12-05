@@ -25,7 +25,7 @@ Files are read through static functions from a FileReader class and .json is par
 
 ### Implementation
 
-![Alt text](./media/smtp_classes.png)
+![Alt text](./media/smtp_classes.jpg)
 
 Emails are sent by groups and each Group object contains all the information necessary to send an email.
 
