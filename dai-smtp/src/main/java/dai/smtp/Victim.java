@@ -18,6 +18,9 @@ public class Victim extends Person {
 
         Victim[] victims = new Victim[emails.size()];
         for (int i = 0; i < emails.size(); ++i) {
+            if(!emails.get(i).contains("@")){
+                return null;
+            }
             victims[i] = new Victim(emails.get(i));
         }
         return victims;

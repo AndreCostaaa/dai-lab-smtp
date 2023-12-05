@@ -28,6 +28,8 @@ public class Main {
         final String messageFilePath = args[1];
         final int nbOfGroups = Integer.parseInt(args[2]);
         final Victim[] victims = Victim.fromFile(victimFilePath);
+        if(victims == null)
+            throw new RuntimeException("Error: invalid emails input");
         final Message[] messages = Message.fromFile(messageFilePath);
 
         if (victims.length < nbOfGroups * 2) {
