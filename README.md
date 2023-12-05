@@ -65,3 +65,14 @@ An exception is thrown in the following cases:
 1. there's not enough e-mail addresses
 2. an erroneous address is detected in the file.
 3. if the smtp server responds with an error.
+
+## Building
+
+The application uses maven as a build tool and java21.
+
+To build (make sure the mock server is running as it is used during testing) and then simply:
+
+```
+cd dai-smpt
+mvn package
+```
