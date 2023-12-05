@@ -12,7 +12,7 @@ public class Main {
             if (sender.send()) {
                 return true;
             }
-            System.out.printf(" Retrying %d/%d...\n", j, MAX_RETRIES);
+            System.out.printf("[INFO] Retrying %d/%d...\n", j, MAX_RETRIES);
         }
         return false;
 
@@ -28,13 +28,18 @@ public class Main {
         final String messageFilePath = args[1];
         final int nbOfGroups = Integer.parseInt(args[2]);
         final Victim[] victims = Victim.fromFile(victimFilePath);
-        if(victims == null)
-            throw new RuntimeException("Error: invalid emails input");
+
+        if (victims == null) {
+            System.out.printf(
+                    "[Error] Invalid emails file. Please make sure the file is valid and contains valid addresses");
+            return;
+        }
         final Message[] messages = Message.fromFile(messageFilePath);
 
         if (victims.length < nbOfGroups * 2) {
-            throw new RuntimeException(String.format("Number of groups %d is too high for the number of emails (%d)",
+            System.out.printf(String.format("[Error] Number of groups %d is too high for the number of emails (%d)",
                     victims.length, nbOfGroups));
+            return;
         }
         if (messages.length < nbOfGroups) {
             System.out.printf(
@@ -43,7 +48,7 @@ public class Main {
         }
         int victimsPerGroup = Math.min(MAX_PEOPLE_PER_GROUP - 1, (victims.length / nbOfGroups) - 1);
 
-        System.out.printf("Nb Of Victims per group: %d\n", victimsPerGroup);
+        System.out.printf("[INFO] Nb Of Victims per group: %d\n", victimsPerGroup);
         for (int i = 0; i < nbOfGroups; ++i) {
             ArrayList<Victim> groupVictims = new ArrayList<>();
 
@@ -57,12 +62,12 @@ public class Main {
                     messages[i % messages.length]);
 
             SmtpEmailSender sender = new SmtpEmailSender(group);
-            System.out.printf("Group %d: %s\n", i, group);
+            System.out.printf("[INFO] Group %d: %s\n", i, group);
 
             if (sendEmailRetry(sender)) {
-                System.out.println("Email Sent Successfully");
+                System.out.println("[SUCCESS] Email Sent Successfully");
             } else {
-                System.out.println("Problem While Sending E-mail ");
+                System.out.println("[ERROR] Problem While Sending E-mail ");
             }
 
         }
